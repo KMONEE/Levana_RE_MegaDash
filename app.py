@@ -21,7 +21,7 @@ st.markdown("""
 """)
 
 
-st.write("""Right now this dashboard is scraping direct each time a page is opened. It can take up to 15min to generate a page but it usually does not take so long.""")
+st.write("""Right now this dashboard is scraping the RandomEarth API each time a page on the dashboard is opened. It can take up to 15min to generate a page but it usually does not take so long.""")
 st.markdown("""## Scraping occurs each time a page is opened, results are not cached.""")
 st.markdown("""## Downloads will cause the page to reload and the scrape to restart.""")
 
