@@ -2,7 +2,6 @@ import pandas as pd
 import json
 import cloudscraper
 import time
-import ast
 def scrape_new(collection_address):
     final_df = pd.DataFrame()
     scraper = cloudscraper.create_scraper()
