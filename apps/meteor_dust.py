@@ -4,9 +4,8 @@ import plotly.express as px
 #import statsmodels.api as sm
 import pandas as pd
 import json
+import ast
 
-
-from scrape import scrape_new
 
 def app():
 
@@ -22,7 +21,7 @@ def app():
 
 
     
-    meteor_dust = scrape_new('terra1p70x7jkqhf37qa7qm4v23g4u4g8ka4ktxudxa7')
+    meteor_dust = pd.read_csv('http://165.22.125.123/meteor_dust_nfts.csv')
     st.dataframe(meteor_dust)
 
     #@st.cache
@@ -48,10 +47,8 @@ def app():
 
     col1.header("Counts of Meteor Dust NFTs \n in wallets per rarity")
     rarity_counts = meteor_dust
-    rarity_counts['traits'] = rarity_counts['traits'].apply(lambda x: x.get('Rarity'))
-    #rarity_counts['traits'] = rarity_counts['traits'].apply(lambda x: ast.literal_eval(x).get('Rarity'))
+    rarity_counts['traits'] = rarity_counts['traits'].apply(lambda x: ast.literal_eval(x).get('Rarity'))
     rarity_counts = rarity_counts['traits'].value_counts()
-    #st.dataframe(rarity_counts)
     col1.dataframe(rarity_counts)
 
 

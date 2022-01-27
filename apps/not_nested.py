@@ -4,9 +4,8 @@ import plotly.express as px
 #import statsmodels.api as sm
 import pandas as pd
 import json
+import ast
 
-
-from scrape import scrape_new
 
 def app():
 
@@ -20,10 +19,8 @@ def app():
     """)
 
 
-
-    #not_nested_df = pd.read_csv(r'C:\Users\Admin\Documents\work\LEVANA\Levana NFT dashboard\Levana_RE_MegaDash\not_nested.csv')
     
-    not_nested_df = scrape_new('terra1k0y373yxqne22pc9g7jvnr4qclpsxtafevtrpg')
+    not_nested_df = pd.read_csv('http://165.22.125.123/egg_nfts.csv')
     st.dataframe(not_nested_df)
 
     #@st.cache
@@ -49,8 +46,7 @@ def app():
 
     col1.header("Counts of unnested eggs \n in wallets per rarity")
     rarity_counts = not_nested_df
-    rarity_counts['traits'] = rarity_counts['traits'].apply(lambda x: x.get('Rarity'))
-    #rarity_counts['traits'] = rarity_counts['traits'].apply(lambda x: ast.literal_eval(x).get('Rarity'))
+    rarity_counts['traits'] = rarity_counts['traits'].apply(lambda x: ast.literal_eval(x).get('Rarity'))
     rarity_counts = rarity_counts['traits'].value_counts()
     #st.dataframe(rarity_counts)
     col1.dataframe(rarity_counts)

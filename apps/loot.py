@@ -4,9 +4,9 @@ import plotly.express as px
 #import statsmodels.api as sm
 import pandas as pd
 import json
+import ast
 
 
-from scrape import scrape_new
 
 def app():
 
@@ -22,10 +22,9 @@ def app():
 
 
     
-    loot = scrape_new('terra14gfnxnwl0yz6njzet4n33erq5n70wt79nm24el')
+    loot = pd.read_csv('http://165.22.125.123/loot_nfts.csv')
     st.dataframe(loot)
 
-    #@st.cache
     def convert_df(df):
         return df.to_csv().encode('utf-8')
     csv = convert_df(loot)
@@ -48,10 +47,8 @@ def app():
 
     col1.header("Counts of Loot NFTs \n in wallets per rarity")
     rarity_counts = loot
-    rarity_counts['traits'] = rarity_counts['traits'].apply(lambda x: x.get('Rarity'))
-    #rarity_counts['traits'] = rarity_counts['traits'].apply(lambda x: ast.literal_eval(x).get('Rarity'))
+    rarity_counts['traits'] = rarity_counts['traits'].apply(lambda x: ast.literal_eval(x).get('Faction')) #this is used to convert the DataFrame column to readable json
     rarity_counts = rarity_counts['traits'].value_counts()
-    #st.dataframe(rarity_counts)
     col1.dataframe(rarity_counts)
 
 
