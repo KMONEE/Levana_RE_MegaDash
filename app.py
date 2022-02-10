@@ -8,7 +8,7 @@ import json
 
 from multiapp import MultiApp
 #from apps import home, not_nested, nested, loot, meteor, meteor_dust # import your app modules here
-from apps import home, loot, nested, meteor_dust, meteors, not_nested
+from apps import home, loot, nested, meteor_dust, meteors, not_nested, stats
 
 app = MultiApp()
 
@@ -29,6 +29,7 @@ st.markdown("""
 
 # Add all your application here
 app.add_app("Home", home.app)
+app.add_app("--> STATS <--", stats.app)
 app.add_app("Loot", loot.app)
 app.add_app("Dragon Eggs (Not Nested)", not_nested.app)
 app.add_app("Dragon Eggs (Nested)", nested.app)
