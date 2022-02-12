@@ -61,17 +61,44 @@ def app():
     st.markdown("""
     ---
     """)
-    st.markdown("""## Unique addresses owning Loot""")
+    
+    col3, col4, col5 = st.columns([1,1,1])
+    col3.markdown("""## Unique addresses owning loot (talisman)""")
 
     uniques = loot['user_addr'].unique()
-    st.dataframe(uniques)
+    col3.dataframe(uniques)
 
     csv2 = convert_df(pd.DataFrame(uniques))
 
-    st.download_button(
+    col3.download_button(
     "Press to Download",
     csv2,
     "unique_address_loot.csv",
+    "text/csv",
+    key='download-csv'
+    )
+
+    col4.header("""Counts of loot (talisman) per wallet""")
+
+    loot_per_wallet = loot['user_addr'].value_counts().reset_index().rename(columns={'user_addr':'loot_count'})
+    col4.dataframe(loot_per_wallet)
+
+    col4.download_button(
+    "Press to Download",
+    convert_df(pd.DataFrame(loot_per_wallet)),
+    "loot_count_per_address.csv",
+    "text/csv",
+    key='download-csv'
+    )
+
+    col5.header("Counts of loot (talisman) per wallet w/ rarity")
+    loot_per_wallet_rarity = loot[['user_addr', 'traits']].value_counts().reset_index().rename(columns={'user_addr':'loot_count', 'traits':'rarity', 0:'count'})
+    col5.dataframe(loot_per_wallet_rarity)
+
+    col5.download_button(
+    "Press to Download",
+    convert_df(pd.DataFrame(loot_per_wallet_rarity)),
+    "loot_count_per_address_with_rarity.csv",
     "text/csv",
     key='download-csv'
     )

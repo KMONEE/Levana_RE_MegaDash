@@ -61,21 +61,47 @@ def app():
     st.markdown("""
     ---
     """)
-    st.markdown("""## Unique addresses owning eggs""")
+
+    col3, col4, col5 = st.columns([1,1,1])
+    col3.markdown("""## Unique addresses owning unnested eggs""")
 
     uniques = not_nested_df['user_addr'].unique()
-    st.dataframe(uniques)
+    col3.dataframe(uniques)
 
     csv2 = convert_df(pd.DataFrame(uniques))
 
-    st.download_button(
+    col3.download_button(
     "Press to Download",
     csv2,
-    "unique_address_not_nested.csv",
+    "unique_address_egg.csv",
     "text/csv",
     key='download-csv'
     )
 
+    col4.header("""Counts of unnested eggs per wallet""")
+
+    egg_per_wallet = not_nested_df['user_addr'].value_counts().reset_index().rename(columns={'user_addr':'egg_count'})
+    col4.dataframe(egg_per_wallet)
+
+    col4.download_button(
+    "Press to Download",
+    convert_df(pd.DataFrame(egg_per_wallet)),
+    "egg_count_per_address.csv",
+    "text/csv",
+    key='download-csv'
+    )
+
+    col5.header("Counts of unnested eggs per wallet w/ rarity")
+    egg_per_wallet_rarity = not_nested_df[['user_addr', 'traits']].value_counts().reset_index().rename(columns={'user_addr':'egg_count', 'traits':'rarity', 0:'count'})
+    col5.dataframe(egg_per_wallet_rarity)
+
+    col5.download_button(
+    "Press to Download",
+    convert_df(pd.DataFrame(egg_per_wallet_rarity)),
+    "egg_count_per_address_with_rarity.csv",
+    "text/csv",
+    key='download-csv'
+    )
 
 #-------------------------------------------------------
     

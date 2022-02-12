@@ -62,14 +62,16 @@ def app():
     st.markdown("""
     ---
     """)
-    st.markdown("""## Unique addresses owning Meteors""")
+
+    col3, col4, col5 = st.columns([1,1,1])
+    col3.markdown("""## All unique addresses""")
 
     uniques = meteors['user_addr'].unique()
-    st.dataframe(uniques)
+    col3.dataframe(uniques)
 
     csv2 = convert_df(pd.DataFrame(uniques))
 
-    st.download_button(
+    col3.download_button(
     "Press to Download",
     csv2,
     "unique_address_meteors.csv",
@@ -77,6 +79,31 @@ def app():
     key='download-csv'
     )
 
+    col4.header("""Counts per wallet                 """)
+
+
+    meteors_per_wallet = meteors['user_addr'].value_counts().reset_index().rename(columns={'user_addr':'meteors_count'})
+    col4.dataframe(meteors_per_wallet)
+
+    col4.download_button(
+    "Press to Download",
+    convert_df(pd.DataFrame(meteors_per_wallet)),
+    "meteors_count_per_address.csv",
+    "text/csv",
+    key='download-csv'
+    )
+
+    col5.header("Counts w/ rarity")
+    meteors_per_wallet_rarity = meteors[['user_addr', 'traits']].value_counts().reset_index().rename(columns={'user_addr':'meteors_count', 'traits':'rarity', 0:'count'})
+    col5.dataframe(meteors_per_wallet_rarity)
+
+    col5.download_button(
+    "Press to Download",
+    convert_df(pd.DataFrame(meteors_per_wallet_rarity)),
+    "meteors_count_per_address_with_rarity.csv",
+    "text/csv",
+    key='download-csv'
+    )
 
 #-------------------------------------------------------
     
