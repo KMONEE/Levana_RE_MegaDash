@@ -38,8 +38,22 @@ Does not count addresses that only hold""")
     key='download-csv'
     )
 
-    col2.header("**Graph to be inserted below**")
-    col2.metric("Count of active addresses during the past 30 days", len(active_address))
+    running_count_df = pd.read_json('https://api.flipsidecrypto.com/api/v2/queries/00878945-64a0-4f77-8506-b49e6176ccc3/data/latest')
+
+
+    col2.markdown("<h1 style='text-align: right; color: white;'>30 day active address count by day</h1>", unsafe_allow_html=True)
+    col2.markdown(f"<h3 style='text-align: right; color: white;'>Current count of 30 day active addresses: {running_count_df['ADDRESS_COUNT'][0]}</h3>", unsafe_allow_html=True)
+
+
+    
+    running_count_df = pd.read_json('https://api.flipsidecrypto.com/api/v2/queries/00878945-64a0-4f77-8506-b49e6176ccc3/data/latest')
+    active_address_graph = px.line(
+        running_count_df,
+        x = 'DAY',
+        y = 'ADDRESS_COUNT',
+        width = 1100
+    )
+    col2.plotly_chart(active_address_graph)
 
     st.text('')
     st.header("Unique addresses holding Levana NFTs")
@@ -50,7 +64,7 @@ Does not count addresses that only hold""")
         x = "TIMESTAMP",
         color = "NFT",
         y = "UNIQUE_ADDRESS_COUNT",
-        width = 1350
+        width = 1400
     )
 
     #st.dataframe(total_nft_holders)
